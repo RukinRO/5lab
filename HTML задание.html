@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Counter App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        button {
+            font-size: 1.5em;
+            margin: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #counter {
+            font-size: 2em;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<button id="decrementButton">-</button>
+<span id="counter">0</span>
+<button id="incrementButton">+</button>
+
+<script>
+    const decrementButton = document.getElementById('decrementButton');
+    const incrementButton = document.getElementById('incrementButton');
+    const counterElement = document.getElementById('counter');
+
+    let counterValue = 0;
+    counterElement.textContent = counterValue;
+
+    function decrement() {
+        counterValue--;
+        counterElement.textContent = counterValue;
+    }
+
+    function increment() {
+        counterValue++;
+        counterElement.textContent = counterValue;
+    }
+
+    decrementButton.addEventListener('click', decrement);
+    incrementButton.addEventListener('click', increment);
+</script>
+
+</body>
+</html>

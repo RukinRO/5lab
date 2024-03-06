@@ -1,0 +1,130 @@
+function counter(n)
+{
+    let currentCount = n;
+
+    function printCount()
+    {
+        console.log(currentCount);
+
+        if (currentCount === 0) clearInterval(intervalId);
+        else currentCount--;
+    }
+
+    const intervalId = setInterval(printCount, 1000);
+}
+
+function createCounter(n)
+{
+    let currentCount = n;
+    let intervalId;
+
+    return {
+        start: function () 
+        {
+            console.log(currentCount);
+
+            intervalId = setInterval(() =>
+                {
+                if (currentCount === 0) clearInterval(intervalId);
+                else
+                {
+                    currentCount--;
+                    console.log(currentCount);
+                }
+            }, 1000);
+        },
+        pause: function ()
+        {
+            clearInterval(intervalId);
+        },
+        stop: function ()
+        {
+            clearInterval(intervalId);
+            currentCount = n;
+        }
+    };
+}
+
+const myCounter = createCounter(5);
+myCounter.start();
+
+
+
+
+
+function delay(N)
+{
+    return new Promise(resolve => {
+        setTimeout(resolve, N * 1000);
+    });
+}
+
+function countDownWithDelay(N)
+{
+    function printCount(count)
+    {
+        console.log(count);
+    }
+
+    function startCountdown()
+    {
+        for (let i = N; i >= 0; i--)
+        {
+            delay(N - i).then(() => printCount(i));
+        }
+    }
+    startCountdown();
+}
+countDownWithDelay(5);
+
+
+
+
+
+class HttpError extends Error
+{
+  constructor(response)
+    {
+    super(`${response.status} for ${response.url}`);
+    this.name = 'HttpError';
+    this.response = response;
+  }
+}
+
+function loadJson(url)
+{
+  return fetch(url)
+    .then(response => {
+      if (response.status == 200) return response.json();
+      else throw new HttpError(response);
+    });
+}
+
+async function getGithubUser()
+{
+  let user;
+  let name;
+
+  do
+  {
+    name = prompt("Введите логин?", "iliakan");
+
+    try 
+    {
+      user = await loadJson(`https://api.github.com/users/${name}`);
+      alert(`Полное имя: ${user.name}.`);
+    }
+    catch (err)
+    {
+      if (err instanceof HttpError && err.response.status == 404)
+          alert("Такого пользователя не существует, пожалуйста, повторите ввод.");
+      else throw err;
+    }
+  }
+      while (!user);
+  return user;
+}
+(async () => {
+  await getGithubUser();
+})();
+
